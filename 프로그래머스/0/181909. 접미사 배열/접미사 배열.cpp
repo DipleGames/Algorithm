@@ -6,16 +6,13 @@ using namespace std;
 
 vector<string> solution(string my_string) 
 {
-    vector<string> answer;
+      vector<string> v;
     
-    int start = my_string.length() - 1;
-    vector<string> strVec;
-    int len = 1;
-    for(int i=start; i>=0; i--)
+    for (int i = 0; i < my_string.size(); i++) 
     {
-        strVec.push_back(my_string.substr(i,len));
-        len++;
+        v.push_back(my_string.substr(i));
     }
-    sort(strVec.begin(), strVec.end());
-    return strVec;
+    
+    sort(v.begin(), v.end());
+    return v;
 }
