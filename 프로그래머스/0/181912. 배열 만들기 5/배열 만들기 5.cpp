@@ -1,18 +1,21 @@
 #include <string>
 #include <vector>
+#include <string>
 
 using namespace std;
 
 vector<int> solution(vector<string> intStrs, int k, int s, int l) 
 {
-    vector<int> result;
-    for(int i=0; i<intStrs.size(); i++)
-    { 
-        string subStr = intStrs[i].substr(s,l);
-        if(stoi(subStr) > k)
-        {
-            result.push_back(stoi(subStr));
-        }
+    vector<int> ret;
+    
+    for(string str : intStrs)
+    {
+        string tmp = "";
+        tmp = str.substr(s,l);
+        
+        if(k < stoi(tmp)) ret.push_back(stoi(tmp));
+        
+        tmp = "";
     }
-    return result;    
+    return ret;
 }
