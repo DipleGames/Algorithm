@@ -6,12 +6,9 @@ using namespace std;
 
 string solution(string my_string, vector<vector<int>> queries) 
 {
-    for(int i=0; i<queries.size(); i++)
+    for(vector<int> q : queries)
     {
-        int s = queries[i][0];
-        int e = queries[i][1];
-            
-        reverse(my_string.begin() + s, my_string.begin() + e + 1);
+        reverse(my_string.begin() + q[0], my_string.begin() + q[1] + 1);
     }
     return my_string;
 }
