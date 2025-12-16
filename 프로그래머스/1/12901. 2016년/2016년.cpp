@@ -6,21 +6,46 @@ using namespace std;
 
 string solution(int a, int b) 
 {
-    vector<pair<int, int>> vec =
-    {
-        {1, 31}, {2, 29}, {3, 31}, {4, 30},
-        {5, 31}, {6, 30}, {7, 31}, {8, 31},
-        {9, 30}, {10, 31}, {11, 30}, {12, 31},
-    };
+    vector<int> arr = {31,29,31,30,31,30,31,31,30,31,30,31};
     
-    vector<string> v = {"FRI", "SAT", "SUN", "MON", "TUE", "WED", "THU"};
-    
-    int days = 0;
-    for(int i=0; i<a-1; i++)
-    {
-        days += vec[i].second;
+    int ans = 0;
+    if(a == 1)
+    { 
+        ans += b;
     }
-    days += b - 1;
-    cout << v[days%7];
-    return v[days%7];;
+    else
+    {
+        for(int i=0; i<a-1; i++)
+        {
+            ans += arr[i];
+        }
+        ans += b;
+    }
+    string answer;
+    cout << ans;
+    switch((ans - 1)%7)
+    {
+        case 0:
+            answer = "FRI";
+            break;
+        case 1:
+            answer = "SAT";
+            break;
+        case 2:
+            answer = "SUN";
+            break;
+        case 3:
+            answer = "MON";
+            break;
+        case 4:
+            answer = "TUE";
+            break;
+        case 5:
+            answer = "WED";
+            break;
+        case 6:
+            answer = "THU";
+            break;
+    }
+    return answer;
 }
