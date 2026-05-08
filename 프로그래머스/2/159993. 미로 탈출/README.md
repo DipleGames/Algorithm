@@ -1,10 +1,10 @@
 # [level 2] 미로 탈출 - 159993 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/159993?language=cpp) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/159993?language=csharp) 
 
 ### 성능 요약
 
-메모리: 4.13 MB, 시간: 0.44 ms
+메모리: 30.6 MB, 시간: 1.33 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 12월 20일 22:25:40
+2026년 05월 09일 02:12:47
 
 ### 문제 설명
 
