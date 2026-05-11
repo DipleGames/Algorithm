@@ -6,41 +6,35 @@ public class Solution
 {
     public int[] solution(string[] wallpaper) 
     {
-        int wpRow = wallpaper.Length;
-        int wpCol = wallpaper[0].Length;
+        int n = wallpaper.Length;
+        int m = wallpaper[0].Length;
         
-        // wallpaper을 2차원 배열로 담는 과정
-        string[,] wpList = new string[wpRow,wpCol];
-        for(int i=0; i<wpRow; i++)
-        {
-            string temp = wallpaper[i];
-            for(int j=0; j<wpCol; j++)
-            {
-                wpList[i,j] = temp[j].ToString();
-            }
-        }
+        int[] upPos = new int[2];// 가장 위에있는 놈
+        int[] leftPos = new int[2];// 가장 왼쪽에있는 놈
+        int[] rightPos = new int[2];// 가장 오른쪽에 있는 놈
+        int[] downPos = new int[2];// 가장 아래에 있는 놈
         
-
-        List<int> sharpRowList = new List<int>();
-        List<int> sharpColList = new List<int>();
-        for(int i=0; i<wpRow; i++)
+        List<(int,int)> sharpPosList = new List<(int,int)>();
+        for(int i=0; i<n; i++)
         {
-            for(int j=0; j<wpCol; j++)
+            for(int j=0; j<m; j++)
             {
-                if(wpList[i,j] == "#")
+                if(wallpaper[i][j] == '#')
                 {
-                    sharpRowList.Add(i);
-                    sharpColList.Add(j);
+                    sharpPosList.Add((i,j));
                 }
             }
         }
-        int lux = sharpRowList.Min();
-        int luy = sharpColList.Min();
-        int rdx = sharpRowList.Max() + 1;
-        int rdy = sharpColList.Max() + 1;
         
-        int[] dragArea = new int[] { lux, luy, rdx, rdy };
+  
+        int minRow = sharpPosList.Min(x => x.Item1);
+        int minCol = sharpPosList.Min(x => x.Item2);
+
+        int maxRow = sharpPosList.Max(x => x.Item1);
+        int maxCol = sharpPosList.Max(x => x.Item2);
+
         
-        return dragArea;
+        
+        return new int[] {minRow,minCol,maxRow + 1,maxCol + 1};
     }
 }
