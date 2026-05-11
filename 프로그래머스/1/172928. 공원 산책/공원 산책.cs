@@ -2,170 +2,90 @@ using System;
 
 public class Solution 
 {
+    int[] pos = new int[2]; 
     public int[] solution(string[] park, string[] routes) 
     {
-        // park를 2차원 배열로 만들겠다.
-        int parkRow = park.Length;
-        int parkCol = park[0].Length;
-        string[,] park2DList = new string[parkRow,parkCol];
+        int H = park.Length;
+        int W = park[0].Length;
         
-        for(int i=0; i<parkRow; i++)
+        for(int i=0; i<H; i++)
         {
-            string temp = park[i];
-            for(int j=0; j<parkCol; j++)
+            for(int j=0; j<W; j++)
             {
-                park2DList[i,j] = temp[j].ToString(); 
-            }
-        }
-        
-        
-        // 명령횟수를 담는 변수
-        int commandCount = routes.Length;
-        
-        // 방향을 담는 배열과 움직이는 칸 수를 담는 배열 
-        string[] direction = new string[commandCount];
-        int[] move = new int[commandCount];
-        
-        // 각각의 배열에 값을 할당하는 과정
-        for(int i=0; i<commandCount; i++)
-        {
-            string temp = routes[i];
-            direction[i] = temp[0].ToString();
-            move[i] = Int32.Parse(temp[2].ToString());
-        }
-        
-        // 결과로 담을 배열 만듬 초기값은 [0,0]
-        int[] pos = new int[2];
-        
-        // 시작 위치 설정
-        for(int i=0; i<parkRow; i++)
-        {
-            for(int j=0; j<parkCol; j++)
-            {
-                if(park2DList[i,j] == "S")
+                if(park[i][j] == 'S')
                 {
                     pos[0] = i;
                     pos[1] = j;
                 }
             }
         }
-        
-        // 로봇 강아지 이동 로직
-        int cIdx = 0; // commandIndex => index번째 방향,move
-        while(cIdx < commandCount)
+    
+        foreach(string route in routes)
         {
-            bool isPossible = true;
+            string[] routeSplit = route.Split(" ");
+            char op = routeSplit[0][0];
+            int n = int.Parse(routeSplit[1]);
             
-            bool rightMove = true;
-            bool leftMove = true;
-            bool upMove = true;
-            bool downMove = true;
-          
-            switch(direction[cIdx])
-            {            
-                case "E":
-                    if(pos[1] + move[cIdx] > parkCol - 1)
-                    {
-                        rightMove = false;
-                        cIdx++;
-                        continue;
-                    }
-                    
-                    if(rightMove)
-                    {                   
-                        for(int j=pos[1]; j<=pos[1] + move[cIdx]; j++)
-                        {
-                            if(park2DList[pos[0],j] == "X")
-                            {
-                                isPossible = false;
-                                break;
-                            }
-                        }
-
-                        if(isPossible)
-                        {   
-                            pos[1] += move[cIdx];
-                        }
-                    }                  
-                    break;
-                case "W":
-                    if(pos[1] - move[cIdx] < 0)
-                    {
-                        leftMove = false;
-                        cIdx++;
-                        continue;
-                    }
-                    
-                    if(leftMove)
-                    {                       
-                        for(int j=pos[1]; j>=pos[1] - move[cIdx]; j--)
-                        {
-                            if(park2DList[pos[0],j] == "X")
-                            {
-                                isPossible = false;
-                                break;
-                            }
-                        }
-
-                        if(isPossible)
-                        {   
-                            pos[1] -= move[cIdx];
-                        }
-                    }
-                    break;
-                case "N":
-                    if(pos[0] - move[cIdx] < 0)
-                    {
-                        upMove = false;
-                        cIdx++;
-                        continue;
-                    }
-                    
-                    if(upMove)
-                    {                     
-                        for(int i=pos[0]; i>=pos[0] - move[cIdx]; i--)
-                        {
-                            if(park2DList[i,pos[1]] == "X")
-                            {
-                                isPossible = false;
-                                break;
-                            }
-                        }
-
-                        if(isPossible)
-                        {   
-                            pos[0] -= move[cIdx];
-                        }
-                    }
-                    break;
-                case "S":
-                    if(pos[0] + move[cIdx] > parkRow - 1)
-                    {
-                        downMove = false;
-                        cIdx++;
-                        continue;
-                    }
-                    
-                    if(downMove)
-                    {                        
-                        for(int i=pos[0]; i<=pos[0] + move[cIdx]; i++)
-                        {
-                            if(park2DList[i,pos[1]] == "X")
-                            {
-                                isPossible = false;
-                                break;
-                            }
-                        }
-
-                        if(isPossible)
-                        {   
-                            pos[0] += move[cIdx];
-                        }
-                    }
-                    break;
+            if(Command(park,H,W,op,n))
+            {
+                switch(op)
+                {
+                    case 'N':
+                        pos[0] -= n;
+                        break;
+                    case 'S':
+                        pos[0] += n;
+                        break;
+                    case 'W':
+                        pos[1] -= n;
+                        break;
+                    case 'E':
+                        pos[1] += n;
+                        break;
+                }
+                Console.WriteLine(pos[0] +"," + pos[1]);
             }
-            cIdx++;
-        }        
+        }
         return pos;
+    }
+    
+    bool Command(string[] park, int H, int W, char op, int n)
+    {
+        switch(op)
+        {
+            case 'N':
+                if(pos[0] - n < 0) return false;
+                for(int i=1; i<=n; i++)
+                {
+                    if(park[pos[0] - i][pos[1]] == 'X') 
+                        return false; 
+                }
+                break;
+            case 'S':
+                if(pos[0] + n > H - 1) return false;
+                for(int i=1; i<=n; i++)
+                {
+                    if(park[pos[0] + i][pos[1]] == 'X') 
+                        return false; 
+                }
+                break;
+            case 'W':
+                if(pos[1] - n  < 0) return false;
+                for(int i=1; i<=n; i++)
+                {
+                    if(park[pos[0]][pos[1] - i] == 'X') 
+                        return false; 
+                }
+                break;
+            case 'E':
+                if(pos[1] + n > W - 1) return false;
+                for(int i=1; i<=n; i++)
+                {
+                    if(park[pos[0]][pos[1] + i] == 'X') 
+                        return false; 
+                }
+                break;
+        }
+        return true;
     }
 }
