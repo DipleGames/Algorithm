@@ -1,40 +1,51 @@
+using System;
 using System.Collections.Generic;
 
-public class Solution
+public class Solution 
 {
-    public double[] solution(int k, int[,] ranges)
+    public double[] solution(int k, int[,] ranges) 
     {
-        List<double> prefix = new List<double> { 0 };
-        long current = k;
-
-        // 우박수열을 만들면서 넓이의 누적 합 저장
-        while (current != 1)
+        List<double> graph = new List<double>();
+        double y = (double)k;
+        graph.Add(y);
+        
+        while(y != 1)
         {
-            long next = current % 2 == 0 ? current / 2 : current * 3 + 1;
-            double area = (current + next) / 2.0;
-
-            prefix.Add(prefix[prefix.Count - 1] + area);
-            current = next;
-        }
-
-        int n = prefix.Count - 1;
-        double[] answer = new double[ranges.GetLength(0)];
-
-        for (int i = 0; i < answer.Length; i++)
-        {
-            int start = ranges[i, 0];
-            int end = n + ranges[i, 1];
-
-            if (start > end)
+            if(y % 2 == 0)
             {
-                answer[i] = -1;
+                y /= 2;
             }
             else
             {
-                answer[i] = prefix[end] - prefix[start];
+                y *= 3;
+                y += 1;
             }
+            graph.Add(y);
         }
 
-        return answer;
+        int n = graph.Count - 1;
+        List<double> areaList = new List<double>();
+        for(int i=0; i<ranges.GetLength(0); i++)
+        {
+            int a = ranges[i,0];
+            int b = n + ranges[i,1];
+            
+            double area = 0;
+            if(a > b)
+            {
+                area = - 1;
+            }
+            else
+            {
+                for(int x=a; x<b; x++)
+                {
+                    double area1 = (graph[x] + graph[x + 1]) / 2;
+                    area += area1;
+                }
+            }
+            areaList.Add(area);
+        }
+        return areaList.ToArray();
     }
+    
 }
