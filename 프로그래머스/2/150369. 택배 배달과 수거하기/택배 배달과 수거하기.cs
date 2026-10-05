@@ -16,10 +16,14 @@ public class Solution
         {
             // 뒤에서부터 이미 처리된 집 건너뛰기
             while (d >= 0 && deliveries[d] == 0)
+            {
                 d--;
+            }
 
             while (p >= 0 && pickups[p] == 0)
+            {
                 p--;
+            }
 
             if (d < 0 && p < 0)
                 break;
@@ -46,7 +50,6 @@ public class Solution
                 }
             }
 
-            // 수거 cap만큼 처리
             // 수거 cap만큼 처리
             box = cap;
 
